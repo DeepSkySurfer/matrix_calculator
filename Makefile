@@ -1,15 +1,19 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -g
-TARGET = test_app
-SOURCES = src/matrix.cpp src/test.cpp
+# Подавление специфических предупреждений
+CXXFLAGS = -std=c++17 -Wall -Wextra -g -Wno-comment
 
-$(TARGET): $(SOURCES)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SOURCES)
+all: matrix_app test_app
 
-test: $(TARGET)
-	./$(TARGET)
+matrix_app: src/matrix.cpp src/main.cpp
+	$(CXX) $(CXXFLAGS) -o matrix_app src/matrix.cpp src/main.cpp
+
+test_app: src/matrix.cpp src/test.cpp
+	$(CXX) $(CXXFLAGS) -o test_app src/matrix.cpp src/test.cpp
+
+test: test_app
+	./test_app
 
 clean:
-	rm -f $(TARGET)
+	rm -f matrix_app test_app
 
-.PHONY: test clean
+.PHONY: all test clean

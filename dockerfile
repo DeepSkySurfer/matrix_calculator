@@ -1,4 +1,5 @@
 FROM gcc:12.2.0
+
 # Установка зависимостей
 RUN apt-get update && apt-get install -y \
     doxygen \
@@ -8,15 +9,18 @@ RUN apt-get update && apt-get install -y \
 # Рабочая директория
 WORKDIR /app
 
-# Копирование исходников
+# Копирование всех необходимых файлов
 COPY src/ ./src/
 COPY Makefile ./
+COPY Doxyfile ./  
 
 # Сборка
 RUN make all
 
-# Документация
+# Генерация документации
 RUN doxygen Doxyfile
 
 # Точка входа
-CMD ["./test_app"]  # Запуск тестов по умолчанию
+CMD ["./test_app"]
+
+RUN doxygen Doxyfile 2>/dev/null || echo "Documentation generated with warnings"

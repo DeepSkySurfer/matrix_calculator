@@ -163,3 +163,43 @@ Matrix matrix_from_array(double* data, int rows, int cols) {
 
     return result;
 }
+
+/**
+ * @brief Вычисляет среднее арифметическое с улучшенной численной стабильностью
+ * 
+ * @details Использует алгоритм Кэхэна для суммирования, что уменьшает ошибку округления
+ *          при работе с большими матрицами или числами разного порядка величин
+ * 
+ * @param m Исходная матрица
+ * @return double Среднее арифметическое с повышенной точностью
+ */
+double matrix_average_stable(Matrix m) {
+    // Валидация (аналогично базовой версии)
+    if (m.data == nullptr || m.rows <= 0 || m.cols <= 0) {
+        throw std::invalid_argument("Invalid matrix");
+    }
+    
+    const size_t total_elements = static_cast<size_t>(m.rows) * static_cast<size_t>(m.cols);
+    
+    // Алгоритм Кэхэна для компенсации ошибок округления
+    double sum = 0.0;
+    double compensation = 0.0; // Компенсация потерянной низкоразрядной части
+    
+    for (int i = 0; i < m.rows; ++i) {
+        if (m.data[i] == nullptr) {
+            throw std::runtime_error("Invalid matrix row");
+        }
+        
+        for (int j = 0; j < m.cols; ++j) {
+            double value = m.data[i][j];
+            double compensated_value = value - compensation;
+            double temp_sum = sum + compensated_value;
+            
+            // Компенсация вычисляется как ошибка при сложении
+            compensation = (temp_sum - sum) - compensated_value;
+            sum = temp_sum;
+        }
+    }
+    
+    return sum / static_cast<double>(total_elements);
+}

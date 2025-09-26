@@ -1,0 +1,98 @@
+\doxysection{src/matrix.cpp File Reference}
+\hypertarget{matrix_8cpp}{}\label{matrix_8cpp}\index{src/matrix.cpp@{src/matrix.cpp}}
+{\ttfamily \#include "{}matrix.\+h"{}}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$iomanip$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+Include dependency graph for matrix.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{matrix_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structMatrix}{Matrix}} \mbox{\hyperlink{matrix_8cpp_a00b3eed9347d1300084aa9b4b59faa14}{create\+\_\+matrix}} (int rows, int cols)
+\item 
+void \mbox{\hyperlink{matrix_8cpp_a4a9db3c0de82f0dd0ada2433b56dfaa4}{free\+\_\+matrix}} (\mbox{\hyperlink{structMatrix}{Matrix}} m)
+\item 
+\mbox{\hyperlink{structMatrix}{Matrix}} \mbox{\hyperlink{matrix_8cpp_a22ddff2afbafb442af6b304fc45da953}{matrix\+\_\+add}} (\mbox{\hyperlink{structMatrix}{Matrix}} a, \mbox{\hyperlink{structMatrix}{Matrix}} b)
+\item 
+\mbox{\hyperlink{structMatrix}{Matrix}} \mbox{\hyperlink{matrix_8cpp_acb87434bec1e8f89c319be6fd81a131d}{matrix\+\_\+multiply}} (\mbox{\hyperlink{structMatrix}{Matrix}} a, \mbox{\hyperlink{structMatrix}{Matrix}} b)
+\item 
+\mbox{\hyperlink{structMatrix}{Matrix}} \mbox{\hyperlink{matrix_8cpp_a6cd05430316da6d9c5b2c8dfb72f863f}{matrix\+\_\+transpose}} (\mbox{\hyperlink{structMatrix}{Matrix}} m)
+\item 
+void \mbox{\hyperlink{matrix_8cpp_a1e1d167b2d075e1e724f94eb9e0259df}{print\+\_\+matrix}} (\mbox{\hyperlink{structMatrix}{Matrix}} m)
+\item 
+\mbox{\hyperlink{structMatrix}{Matrix}} \mbox{\hyperlink{matrix_8cpp_ab25adc6286a85175b01f1545f3e8fbd4}{matrix\+\_\+from\+\_\+array}} (double \texorpdfstring{$\ast$}{*}data, int rows, int cols)
+\item 
+double \mbox{\hyperlink{matrix_8cpp_a33cfede8903b62ebfecae36212cce432}{matrix\+\_\+average\+\_\+stable}} (\mbox{\hyperlink{structMatrix}{Matrix}} m)
+\begin{DoxyCompactList}\small\item\em Вычисляет среднее арифметическое с улучшенной численной стабильностью \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{matrix_8cpp_a00b3eed9347d1300084aa9b4b59faa14}\label{matrix_8cpp_a00b3eed9347d1300084aa9b4b59faa14} 
+\index{matrix.cpp@{matrix.cpp}!create\_matrix@{create\_matrix}}
+\index{create\_matrix@{create\_matrix}!matrix.cpp@{matrix.cpp}}
+\doxysubsubsection{\texorpdfstring{create\_matrix()}{create\_matrix()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMatrix}{Matrix}} create\+\_\+matrix (\begin{DoxyParamCaption}\item[{int}]{rows,  }\item[{int}]{cols }\end{DoxyParamCaption})}
+
+\Hypertarget{matrix_8cpp_a4a9db3c0de82f0dd0ada2433b56dfaa4}\label{matrix_8cpp_a4a9db3c0de82f0dd0ada2433b56dfaa4} 
+\index{matrix.cpp@{matrix.cpp}!free\_matrix@{free\_matrix}}
+\index{free\_matrix@{free\_matrix}!matrix.cpp@{matrix.cpp}}
+\doxysubsubsection{\texorpdfstring{free\_matrix()}{free\_matrix()}}
+{\footnotesize\ttfamily void free\+\_\+matrix (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMatrix}{Matrix}}}]{m }\end{DoxyParamCaption})}
+
+\Hypertarget{matrix_8cpp_a22ddff2afbafb442af6b304fc45da953}\label{matrix_8cpp_a22ddff2afbafb442af6b304fc45da953} 
+\index{matrix.cpp@{matrix.cpp}!matrix\_add@{matrix\_add}}
+\index{matrix\_add@{matrix\_add}!matrix.cpp@{matrix.cpp}}
+\doxysubsubsection{\texorpdfstring{matrix\_add()}{matrix\_add()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMatrix}{Matrix}} matrix\+\_\+add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMatrix}{Matrix}}}]{a,  }\item[{\mbox{\hyperlink{structMatrix}{Matrix}}}]{b }\end{DoxyParamCaption})}
+
+\Hypertarget{matrix_8cpp_a33cfede8903b62ebfecae36212cce432}\label{matrix_8cpp_a33cfede8903b62ebfecae36212cce432} 
+\index{matrix.cpp@{matrix.cpp}!matrix\_average\_stable@{matrix\_average\_stable}}
+\index{matrix\_average\_stable@{matrix\_average\_stable}!matrix.cpp@{matrix.cpp}}
+\doxysubsubsection{\texorpdfstring{matrix\_average\_stable()}{matrix\_average\_stable()}}
+{\footnotesize\ttfamily double matrix\+\_\+average\+\_\+stable (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMatrix}{Matrix}}}]{m }\end{DoxyParamCaption})}
+
+
+
+Вычисляет среднее арифметическое с улучшенной численной стабильностью 
+
+Использует алгоритм Кэхэна для суммирования, что уменьшает ошибку округления при работе с большими матрицами или числами разного порядка величин
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Исходная матрица \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double Среднее арифметическое с повышенной точностью 
+\end{DoxyReturn}
+\Hypertarget{matrix_8cpp_ab25adc6286a85175b01f1545f3e8fbd4}\label{matrix_8cpp_ab25adc6286a85175b01f1545f3e8fbd4} 
+\index{matrix.cpp@{matrix.cpp}!matrix\_from\_array@{matrix\_from\_array}}
+\index{matrix\_from\_array@{matrix\_from\_array}!matrix.cpp@{matrix.cpp}}
+\doxysubsubsection{\texorpdfstring{matrix\_from\_array()}{matrix\_from\_array()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMatrix}{Matrix}} matrix\+\_\+from\+\_\+array (\begin{DoxyParamCaption}\item[{double \texorpdfstring{$\ast$}{*}}]{data,  }\item[{int}]{rows,  }\item[{int}]{cols }\end{DoxyParamCaption})}
+
+\Hypertarget{matrix_8cpp_acb87434bec1e8f89c319be6fd81a131d}\label{matrix_8cpp_acb87434bec1e8f89c319be6fd81a131d} 
+\index{matrix.cpp@{matrix.cpp}!matrix\_multiply@{matrix\_multiply}}
+\index{matrix\_multiply@{matrix\_multiply}!matrix.cpp@{matrix.cpp}}
+\doxysubsubsection{\texorpdfstring{matrix\_multiply()}{matrix\_multiply()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMatrix}{Matrix}} matrix\+\_\+multiply (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMatrix}{Matrix}}}]{a,  }\item[{\mbox{\hyperlink{structMatrix}{Matrix}}}]{b }\end{DoxyParamCaption})}
+
+\Hypertarget{matrix_8cpp_a6cd05430316da6d9c5b2c8dfb72f863f}\label{matrix_8cpp_a6cd05430316da6d9c5b2c8dfb72f863f} 
+\index{matrix.cpp@{matrix.cpp}!matrix\_transpose@{matrix\_transpose}}
+\index{matrix\_transpose@{matrix\_transpose}!matrix.cpp@{matrix.cpp}}
+\doxysubsubsection{\texorpdfstring{matrix\_transpose()}{matrix\_transpose()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMatrix}{Matrix}} matrix\+\_\+transpose (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMatrix}{Matrix}}}]{m }\end{DoxyParamCaption})}
+
+\Hypertarget{matrix_8cpp_a1e1d167b2d075e1e724f94eb9e0259df}\label{matrix_8cpp_a1e1d167b2d075e1e724f94eb9e0259df} 
+\index{matrix.cpp@{matrix.cpp}!print\_matrix@{print\_matrix}}
+\index{print\_matrix@{print\_matrix}!matrix.cpp@{matrix.cpp}}
+\doxysubsubsection{\texorpdfstring{print\_matrix()}{print\_matrix()}}
+{\footnotesize\ttfamily void print\+\_\+matrix (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMatrix}{Matrix}}}]{m }\end{DoxyParamCaption})}
+
