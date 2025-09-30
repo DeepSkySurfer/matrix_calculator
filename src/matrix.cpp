@@ -1,205 +1,102 @@
 #include "matrix.h"
 #include <iostream>
-#include <iomanip>
+#include <cmath>
 #include <stdexcept>
 
-// УДАЛИТЬ #pragma once из этого файла!
-
 Matrix create_matrix(int rows, int cols) {
-    if (rows <= 0 || cols <= 0) {
-        throw std::invalid_argument("Matrix dimensions must be positive integers");
-    }
-
-    Matrix mat;
-    mat.rows = rows;
-    mat.cols = cols;
-
-    mat.data = new double*[rows];
-    if (mat.data == nullptr) {
-        throw std::bad_alloc();
-    }
-
+    if (rows <= 0 || cols <= 0) throw std::invalid_argument("Invalid matrix size");
+    Matrix m;
+    m.rows = rows;
+    m.cols = cols;
+    m.data = new double*[rows];
     for (int i = 0; i < rows; i++) {
-        mat.data[i] = new double[cols];
-        if (mat.data[i] == nullptr) {
-            for (int j = 0; j < i; j++) {
-                delete[] mat.data[j];
-            }
-            delete[] mat.data;
-            throw std::bad_alloc();
-        }
-
-        for (int j = 0; j < cols; j++) {
-            mat.data[i][j] = 0.0;
-        }
+        m.data[i] = new double[cols]{0};
     }
-
-    return mat;
+    return m;
 }
 
 void free_matrix(Matrix m) {
-    if (m.data == nullptr) {
-        return;
-    }
-
+    if (!m.data) return;
     for (int i = 0; i < m.rows; i++) {
-        if (m.data[i] != nullptr) {
-            delete[] m.data[i];
-            m.data[i] = nullptr;
-        }
+        delete[] m.data[i];
     }
-
     delete[] m.data;
-    m.data = nullptr;
-    m.rows = 0;
-    m.cols = 0;
 }
 
 Matrix matrix_add(Matrix a, Matrix b) {
-    if (a.rows != b.rows || a.cols != b.cols) {
-        throw std::invalid_argument("Matrix dimensions must match for addition");
-    }
+    if (a.rows != b.rows || a.cols != b.cols)
+        throw std::invalid_argument("Matrix sizes must match for addition");
 
-    Matrix result = create_matrix(a.rows, a.cols);
-
+    Matrix res = create_matrix(a.rows, a.cols);
     for (int i = 0; i < a.rows; i++) {
         for (int j = 0; j < a.cols; j++) {
-            result.data[i][j] = a.data[i][j] + b.data[i][j];
+            res.data[i][j] = a.data[i][j] + b.data[i][j];
         }
     }
-
-    return result;
+    return res;
 }
 
 Matrix matrix_multiply(Matrix a, Matrix b) {
-    if (a.cols != b.rows) {
-        throw std::invalid_argument("Matrix dimensions must be compatible for multiplication");
-    }
+    if (a.cols != b.rows)
+        throw std::invalid_argument("Matrix sizes are incompatible for multiplication");
 
-    Matrix result = create_matrix(a.rows, b.cols);
-
+    Matrix res = create_matrix(a.rows, b.cols);
     for (int i = 0; i < a.rows; i++) {
         for (int j = 0; j < b.cols; j++) {
-            result.data[i][j] = 0.0;
+            double sum = 0;
             for (int k = 0; k < a.cols; k++) {
-                result.data[i][j] += a.data[i][k] * b.data[k][j];
+                sum += a.data[i][k] * b.data[k][j];
             }
+            res.data[i][j] = sum;
         }
     }
-
-    return result;
+    return res;
 }
 
 Matrix matrix_transpose(Matrix m) {
-    Matrix result = create_matrix(m.cols, m.rows);
-
+    Matrix res = create_matrix(m.cols, m.rows);
     for (int i = 0; i < m.rows; i++) {
         for (int j = 0; j < m.cols; j++) {
-            result.data[j][i] = m.data[i][j];
+            res.data[j][i] = m.data[i][j];
         }
     }
-
-    return result;
+    return res;
 }
 
 void print_matrix(Matrix m) {
-    if (m.data == nullptr || m.rows <= 0 || m.cols <= 0) {
-        std::cout << "[Empty matrix]" << std::endl;
-        return;
-    }
-
-    std::cout << std::fixed << std::setprecision(2);
-
-    const int MAX_ROWS_TO_SHOW = 10;
-    const int MAX_COLS_TO_SHOW = 8;
-    bool show_summary = (m.rows > MAX_ROWS_TO_SHOW || m.cols > MAX_COLS_TO_SHOW);
-    int rows_to_show = show_summary ? MAX_ROWS_TO_SHOW : m.rows;
-    int cols_to_show = show_summary ? MAX_COLS_TO_SHOW : m.cols;
-
-    for (int i = 0; i < rows_to_show; i++) {
-        if (show_summary && i == MAX_ROWS_TO_SHOW / 2 && m.rows > MAX_ROWS_TO_SHOW) {
-            std::cout << "[...";
-            for (int j = 0; j < cols_to_show - 2; j++) {
-                std::cout << "      "; // 6 пробелов
-            }
-            std::cout << "...]" << std::endl;
-            continue;
+    for (int i = 0; i < m.rows; i++) {
+        std::cout << " [";
+        for (int j = 0; j < m.cols; j++) {
+            std::cout << m.data[i][j];
+            if (j < m.cols - 1) std::cout << "   ";
         }
-
-        std::cout << "[";
-        for (int j = 0; j < cols_to_show; j++) {
-            if (show_summary && j == MAX_COLS_TO_SHOW / 2 && m.cols > MAX_COLS_TO_SHOW) {
-                std::cout << " ... ";
-                continue;
-            }
-            std::cout << std::setw(6) << m.data[i][j];
-            if (j < cols_to_show - 1) {
-                std::cout << " ";
-            }
-        }
-        std::cout << "]";
-
-        if (show_summary && m.cols > MAX_COLS_TO_SHOW) {
-            std::cout << " ...";
-        }
-        std::cout << std::endl;
-    }
-
-    if (show_summary) {
-        std::cout << "Matrix " << m.rows << "×" << m.cols 
-                  << " (showing first " << rows_to_show << "×" << cols_to_show << ")"
-                  << std::endl;
+        std::cout << "]\n";
     }
 }
 
 Matrix matrix_from_array(double* data, int rows, int cols) {
-    Matrix result = create_matrix(rows, cols);
-
+    Matrix m = create_matrix(rows, cols);
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            result.data[i][j] = data[i * cols + j];
+            m.data[i][j] = data[i * cols + j];
         }
     }
-
-    return result;
+    return m;
 }
 
-/**
- * @brief Вычисляет среднее арифметическое с улучшенной численной стабильностью
- * 
- * @details Использует алгоритм Кэхэна для суммирования, что уменьшает ошибку округления
- *          при работе с большими матрицами или числами разного порядка величин
- * 
- * @param m Исходная матрица
- * @return double Среднее арифметическое с повышенной точностью
- */
-double matrix_average_stable(Matrix m) {
-    // Валидация (аналогично базовой версии)
-    if (m.data == nullptr || m.rows <= 0 || m.cols <= 0) {
+double matrix_average(Matrix m) {
+    if (m.rows <= 0 || m.cols <= 0 || !m.data) {
         throw std::invalid_argument("Invalid matrix");
     }
     
-    const size_t total_elements = static_cast<size_t>(m.rows) * static_cast<size_t>(m.cols);
-    
-    // Алгоритм Кэхэна для компенсации ошибок округления
     double sum = 0.0;
-    double compensation = 0.0; // Компенсация потерянной низкоразрядной части
+    int total_elements = m.rows * m.cols;
     
-    for (int i = 0; i < m.rows; ++i) {
-        if (m.data[i] == nullptr) {
-            throw std::runtime_error("Invalid matrix row");
-        }
-        
-        for (int j = 0; j < m.cols; ++j) {
-            double value = m.data[i][j];
-            double compensated_value = value - compensation;
-            double temp_sum = sum + compensated_value;
-            
-            // Компенсация вычисляется как ошибка при сложении
-            compensation = (temp_sum - sum) - compensated_value;
-            sum = temp_sum;
+    for (int i = 0; i < m.rows; i++) {
+        for (int j = 0; j < m.cols; j++) {
+            sum += m.data[i][j];
         }
     }
     
-    return sum / static_cast<double>(total_elements);
+    return sum / total_elements;
 }

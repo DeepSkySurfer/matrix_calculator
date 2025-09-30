@@ -1,10 +1,11 @@
-#pragma once
+#ifndef MATRIX_H
+#define MATRIX_H
 
-typedef struct {
-    double** data;
+struct Matrix {
     int rows;
     int cols;
-} Matrix;
+    double** data;
+};
 
 // Объявления функций
 Matrix create_matrix(int rows, int cols);
@@ -14,4 +15,6 @@ Matrix matrix_multiply(Matrix a, Matrix b);
 Matrix matrix_transpose(Matrix m);
 void print_matrix(Matrix m);
 Matrix matrix_from_array(double* data, int rows, int cols);
-double matrix_average_stable(Matrix m);
+double matrix_average(Matrix m);
+
+#endif
